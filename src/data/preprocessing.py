@@ -1,4 +1,15 @@
-"""Functions for preprocessing CFPB complaint data."""
+"""
+Preprocessing module for financial complaints data.
+
+This module provides functions for cleaning and preprocessing customer complaint
+narratives and associated metadata. It handles text normalization, standardization
+of categorical variables, and preparation of data for the RAG pipeline.
+
+Functions:
+    clean_text: Cleans and normalizes text data
+    preprocess_text: Tokenizes and preprocesses text for analysis
+    standardize_categories: Standardizes categorical variables
+"""
 
 from config.config import PRODUCT_CATEGORIES, PRODUCT_MAPPING, RAW_DATA_DIR, PROCESSED_DATA_DIR
 import pandas as pd
@@ -7,10 +18,21 @@ from typing import List, Dict
 import re
 from pathlib import Path
 import sys
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import nltk
 
 # Add project root to Python path
 project_root = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(project_root))
+
+# Download required NLTK resources
+try:
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('punkt')
+    nltk.download('stopwords')
 
 
 def load_complaints_data(file_path: Path = RAW_DATA_DIR / "complaints.csv") -> pd.DataFrame:
@@ -67,6 +89,151 @@ def filter_products(df: pd.DataFrame, categories: List[str] = PRODUCT_CATEGORIES
         f"\nTotal filtered complaints: {len(filtered_df):,} ({len(filtered_df)/len(df)*100:.1f}% of total)")
 
     return filtered_df
+
+
+def clean_text(text: str) -> str:
+    """
+    Clean and normalize text data.
+
+    This function performs several cleaning operations:
+    1. Converts text to lowercase
+    2. Replaces XXXX patterns with [REDACTED]
+    3. Removes special characters and digits
+    4. Normalizes whitespace
+
+    Args:
+        text: The input text to clean
+
+    Returns:
+        str: The cleaned text
+
+    Examples:
+        >>> clean_text("This is a SAMPLE text with XXXX!")
+        "this is a sample text with [REDACTED]"
+    """
+    if pd.isna(text):
+        return ""
+
+    # Convert to string if not already
+    text = str(text)
+
+    # Remove 'b' prefix and quotes if present (from byte string)
+    text = re.sub(r"^b'|'$", '', text)
+
+    # Convert to lowercase
+    text = text.lower()
+
+    # Replace XXXX with [REDACTED]
+    text = re.sub(r'x{2,}', '[REDACTED]', text)
+
+    # Remove special characters and digits, but keep [REDACTED]
+    text = re.sub(r'[^a-zA-Z\s\[\]REDACTED]', ' ', text)
+
+    # Remove extra whitespace
+    text = ' '.join(text.split())
+
+    return text
+
+
+def preprocess_text(text: str) -> list:
+    """
+    Preprocess text data for analysis.
+
+    This function:
+    1. Tokenizes the text
+    2. Removes stopwords
+    3. Removes short tokens
+    4. Removes [REDACTED] tokens
+
+    Args:
+        text: The input text to preprocess
+
+    Returns:
+        list: List of preprocessed tokens
+
+    Examples:
+        >>> preprocess_text("This is a sample text")
+        ['sample', 'text']
+    """
+    if pd.isna(text):
+        return []
+
+    # Tokenize
+    tokens = word_tokenize(text)
+
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token.lower() not in stop_words]
+
+    # Remove short tokens and [REDACTED]
+    tokens = [token for token in tokens if len(
+        token) > 2 and token != '[REDACTED]']
+
+    return tokens
+
+
+def standardize_categories(df: pd.DataFrame, column: str) -> pd.Series:
+    """
+    Standardize categorical variables in the dataset.
+
+    This function standardizes categories by:
+    1. Converting to lowercase
+    2. Removing extra whitespace
+    3. Replacing common variations with standard forms
+    4. Handling specific mappings for products and companies
+
+    Args:
+        df: Input DataFrame
+        column: Name of the column to standardize
+
+    Returns:
+        pd.Series: Standardized category column
+
+    Examples:
+        >>> df = pd.DataFrame({'product': ['Credit Cards', 'CREDIT-CARD']})
+        >>> standardize_categories(df, 'product')
+        0    credit card
+        1    credit card
+        Name: product, dtype: object
+    """
+    if df[column].dtype != 'object':
+        return df[column]
+
+    # Convert to lowercase and strip whitespace
+    result = df[column].str.lower().str.strip()
+
+    # Common replacements for financial products
+    product_replacements = {
+        'credit card': ['credit cards', 'creditcard', 'credit-card'],
+        'checking account': ['checking', 'checking acct', 'check account'],
+        'savings account': ['savings', 'savings acct', 'save account'],
+        'mortgage': ['home loan', 'house loan', 'mortgage loan'],
+        'personal loan': ['personal loans', 'consumer loan'],
+        'student loan': ['student loans', 'education loan'],
+        'vehicle loan': ['auto loan', 'car loan', 'automobile loan']
+    }
+
+    # Common replacements for companies
+    company_replacements = {
+        'wells fargo': ['wellsfargo', 'wells fargo bank', 'wf bank'],
+        'bank of america': ['bofa', 'bank of america na', 'bankofamerica'],
+        'jpmorgan chase': ['chase', 'chase bank', 'jp morgan'],
+        'citibank': ['citi', 'citigroup', 'citi bank']
+    }
+
+    # Apply replacements based on column name
+    if 'product' in column.lower():
+        replacements = product_replacements
+    elif 'company' in column.lower():
+        replacements = company_replacements
+    else:
+        return result
+
+    # Apply standardization
+    for standard, variations in replacements.items():
+        result = result.replace(variations, standard)
+
+    return result
 
 
 def clean_narrative(text: str) -> str:
