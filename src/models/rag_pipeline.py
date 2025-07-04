@@ -25,10 +25,13 @@ if project_root not in sys.path:
 class RAGPipeline:
     """Implements the RAG pipeline for financial complaints analysis."""
 
+    # Configuration
+    MIN_RELEVANCE_SCORE = 0.3
+    MAX_RESPONSE_LENGTH = 300
+    TEMPERATURE = 0.2
+
     # Base prompt template
-    PROMPT_TEMPLATE = """You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints.
-    
-Use ONLY the following retrieved complaint excerpts to formulate your answer. If the context doesn't contain enough information to fully answer the question, clearly state what information is missing.
+    PROMPT_TEMPLATE = """You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.
 
 Context:
 {context}
@@ -36,11 +39,26 @@ Context:
 Question: {question}
 
 Instructions:
-1. Base your answer ONLY on the provided context
-2. If the context is insufficient, say so
-3. If you cite specific complaints, reference them by their ID
-4. Be concise but thorough
-5. If there are multiple relevant complaints, summarize the common themes
+1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge
+2. If the context doesn't contain enough information, clearly state what's missing
+3. For each claim, quote the relevant text and cite its complaint ID
+4. Keep your response under 300 words
+5. Use bullet points for better readability
+6. Focus on complaints with higher relevance scores (ignore scores below 0.3)
+7. If you notice contradictions or inconsistencies, point them out
+8. If multiple complaints show a pattern, summarize it with supporting quotes
+
+Example Good Response:
+• Based on complaint ID 12345 (relevance 0.8): "customers reported frequent billing errors" showing issues with transaction processing
+• Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions "resolved within 24 hours"
+• Cannot determine overall trends as context only covers 2022-2023
+
+Example Bad Response:
+• Most customers are satisfied (not supported by context)
+• Banks typically resolve issues quickly (contradicts available evidence)
+• Response times vary between 1-5 days (making up specific numbers)
+
+Remember: It's better to acknowledge limited information than to make unsupported claims.
 
 Answer:"""
 
@@ -83,23 +101,41 @@ Answer:"""
         )
         question_embedding = embeddings[0]
 
-        # Retrieve similar chunks
+        # Retrieve more chunks than needed to filter by relevance
         results = self.vector_store.query(
             query_embedding=question_embedding,
-            n_results=k
+            n_results=k * 2  # Get more chunks to filter
         )
 
-        # Format results into list of dictionaries
+        # Format and filter results
         formatted_results = []
-        # ChromaDB returns nested lists
+        seen_content = set()  # For deduplication
+
         for i in range(len(results['ids'][0])):
+            distance = results['distances'][0][i]
+            relevance = 1.0 - distance
+
+            # Skip low relevance chunks
+            if relevance < self.MIN_RELEVANCE_SCORE:
+                continue
+
+            content = results['documents'][0][i]
+
+            # Skip duplicate content
+            content_hash = hash(content)
+            if content_hash in seen_content:
+                continue
+            seen_content.add(content_hash)
+
             formatted_results.append({
-                'document': results['documents'][0][i],
+                'document': content,
                 'metadata': results['metadatas'][0][i],
-                'distance': results['distances'][0][i]
+                'distance': distance,
+                'relevance': relevance
             })
 
-        return formatted_results
+        # Return top k unique, relevant results
+        return formatted_results[:k]
 
     def _format_context(self, chunks: List[Dict[str, Any]]) -> str:
         """Format retrieved chunks into context string.
@@ -129,6 +165,41 @@ Answer:"""
 
         return "\n\n".join(context_parts)
 
+    def _validate_response(self, response: str, chunks: List[Dict[str, Any]]) -> bool:
+        """Validate that response only contains information from chunks.
+
+        Args:
+            response: Generated response
+            chunks: Retrieved chunks used for generation
+
+        Returns:
+            bool: Whether response is valid
+        """
+        # Extract all complaint IDs mentioned in response
+        import re
+        cited_ids = set(re.findall(r'ID: (\d+)', response))
+
+        # Get actual chunk IDs
+        chunk_ids = set(
+            chunk.get('metadata', {}).get('complaint_id', '')
+            for chunk in chunks
+        )
+
+        # Check if response cites non-existent chunks
+        valid_ids = all(cid in chunk_ids for cid in cited_ids)
+
+        # Check if response length is within limits
+        valid_length = len(response.split()) <= self.MAX_RESPONSE_LENGTH
+
+        # Check for quoted content
+        quotes = re.findall(r'"([^"]*)"', response)
+        valid_quotes = all(
+            any(quote in chunk.get('document', '') for chunk in chunks)
+            for quote in quotes
+        )
+
+        return valid_ids and valid_length and valid_quotes
+
     def generate_response(self, question: str, chunks: List[Dict[str, Any]]) -> str:
         """Generate a response using the LLM.
 
@@ -139,6 +210,9 @@ Answer:"""
         Returns:
             Generated response
         """
+        # Sort chunks by relevance
+        chunks = sorted(chunks, key=lambda x: x.get('distance', 1.0))
+
         # Format the context
         context = self._format_context(chunks)
 
@@ -151,9 +225,18 @@ Answer:"""
         # Generate response using LLM
         response = self.llm.generate(
             prompt,
-            max_new_tokens=512,  # Reasonable length for answers
-            temperature=0.7      # Balanced between creativity and consistency
+            max_new_tokens=self.MAX_RESPONSE_LENGTH,
+            temperature=self.TEMPERATURE
         )
+
+        # Validate response
+        if not self._validate_response(response, chunks):
+            # If validation fails, regenerate with stricter parameters
+            response = self.llm.generate(
+                prompt,
+                max_new_tokens=self.MAX_RESPONSE_LENGTH,
+                temperature=self.TEMPERATURE * 0.5  # Even more conservative
+            )
 
         return response
 
