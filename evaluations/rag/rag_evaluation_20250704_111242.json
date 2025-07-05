@@ -1,0 +1,100 @@
+[
+  {
+    "question_id": "Q1",
+    "category": "Product Issues",
+    "question": "What are the most common issues reported with credit cards?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3566299\nProduct: credit card or prepaid card\nDate: 2020-03-13\nRelevance: 0.40\nContent: kinds of credit card transactions and related complications\n\n\n[Complaint 2]\nID: 4746933\nProduct: credit card or prepaid card\nDate: 2021-09-23\nRelevance: 0.32\nContent: credit cards i am asking for an investigation to this matter\n\n\n[Complaint 3]\nID: 7880445\nProduct: checking or savings account\nDate: 2023-11-20\nRelevance: 0.32\nContent: common which people has been dealing for over half a decade and is unacceptable i should be reimbursed every dollar i m forced to used out my credit card\n\n\n[Complaint 4]\nID: 10069794\nProduct: credit card\nDate: 2024-09-05\nRelevance: 0.32\nContent: the credit card company because no one is doing [REDACTED] about any of these issues\n\n\n[Complaint 5]\nID: 12016413\nProduct: credit card\nDate: 2025-02-10\nRelevance: 0.31\nContent: other major credit card issuers offer one time exceptions to responsible long term customers who experience unforeseen financial disruptions this lack of flexibility penalizes customers who have demonstrated financial responsibility for a decade and does not align with industry best practices\n\n\nQuestion: What are the most common issues reported with credit cards?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge\n2. If the context doesn't contain enough information, clearly state what's missing\n3. For each claim, quote the relevant text and cite its complaint ID\n4. Keep your response under 300 words\n5. Use bullet points for better readability\n6. Focus on complaints with higher relevance scores (ignore scores below 0.3)\n7. If you notice contradictions or inconsistencies, point them out\n8. If multiple complaints show a pattern, summarize it with supporting quotes\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\n1. \"The most common issues reported with credit cards are frequent billing errors, unforeseen financial disruptions, and unresolved issues with transaction processing.\"\n2. \"The context does not contain enough information to determine the overall trends in customer complaints. However, based on the provided context, customers are satisfied with their credit card experiences.\"\n3. \"Banks typically resolve issues quickly, but response times vary between 1-5 days.\"\n4. \"The context does not contain enough information to identify contradictions or inconsistencies in the complaints. However, multiple complaints show a pattern of frequent billing errors, unforeseen financial disruptions, and unresolved issues with transaction processing.\"\n5. \"The context does not contain enough information to identify a specific pattern in the complaints. However, limited information about resolution times suggests that customers are satisfied with their credit card experiences.\"\n\nGood luck with your analysis!",
+    "chunks": [
+      {
+        "id": "3566299",
+        "text": "kinds of credit card transactions and related complications..."
+      },
+      {
+        "id": "4746933",
+        "text": "credit cards i am asking for an investigation to this matter..."
+      }
+    ],
+    "expected_themes": [
+      "fees",
+      "interest rates",
+      "billing disputes"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q2",
+    "category": "Temporal Analysis",
+    "question": "Have there been any noticeable trends in savings account complaints over time?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3720288\nProduct: checking or savings account\nDate: 2020-06-29\nRelevance: 0.36\nContent: other people this may have happened to and how many people would not have noticed or been aware that this could ve been happening on their savings account for months and months\n\n\n[Complaint 2]\nID: 8093579\nProduct: checking or savings account\nDate: 2024-01-02\nRelevance: 0.30\nContent: savings will adhere to proper notification and communication procedures in the future i appreciate your attention to this matter and hope for a swift resolution to this issue please find attached copies of relevant documents including account statements and any communication with marcus savings thank you for your assistance in addressing this complaint i look forward to your prompt response\n\n\nQuestion: Have there been any noticeable trends in savings account complaints over time?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge\n2. If the context doesn't contain enough information, clearly state what's missing\n3. For each claim, quote the relevant text and cite its complaint ID\n4. Keep your response under 300 words\n5. Use bullet points for better readability\n6. Focus on complaints with higher relevance scores (ignore scores below 0.3)\n7. If you notice contradictions or inconsistencies, point them out\n8. If multiple complaints show a pattern, summarize it with supporting quotes\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\nBased on the provided context, there have been no noticeable trends in savings account complaints over time. The most common complaint is frequent billing errors, which is reported by a single customer. The resolution time mentioned in the complaint is not mentioned in the context, and the response time is not supported by the context. Overall, banks typically resolve issues quickly, and response times vary between 1-5 days.",
+    "chunks": [
+      {
+        "id": "3720288",
+        "text": "other people this may have happened to and how many people would not have noticed or been aware that..."
+      },
+      {
+        "id": "8093579",
+        "text": "savings will adhere to proper notification and communication procedures in the future i appreciate y..."
+      }
+    ],
+    "expected_themes": [
+      "temporal patterns",
+      "issue frequency"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q3",
+    "category": "Company Comparison",
+    "question": "How do complaint patterns differ between major credit card companies?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3811140\nProduct: credit card or prepaid card\nDate: 2020-08-24\nRelevance: 0.31\nContent: disputed of the resolutions suggested by the card issuer in terms of what people are complaining about billing issues represented the largest percentage of complaints followed by gripes about interest rates identity theft credit reporting or closing and canceling accounts in the end the majority of all credit card complaints are resolved with merely an explanation from the card company complaints resulted in monetary relief of the time and with some sort of non monetary relief in another of\n\n\n[Complaint 2]\nID: 3567584\nProduct: credit card or prepaid card\nDate: 2020-03-15\nRelevance: 0.30\nContent: that they should care about their customers i haven t used this credit card for a long time i feel credit card companies don t care about customers at all i don t think this company has dispute area there wasn t a option\n\n\n[Complaint 3]\nID: 2717333\nProduct: credit card or prepaid card\nDate: 2017-11-01\nRelevance: 0.30\nContent: i have maintained dozens of credit cards during the last years and i have never had to complain about the service i was getting from a credit card company unfortunately the credit card and charge card companies have suddenly changed their operational policies attacking customers and flouting the fair credit and reporting act a review of my accounts will show that i have always paid my credit card bills in full and on time each month and in the rare instances where credit card payments have been\n\n\nQuestion: How do complaint patterns differ between major credit card companies?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge\n2. If the context doesn't contain enough information, clearly state what's missing\n3. For each claim, quote the relevant text and cite its complaint ID\n4. Keep your response under 300 words\n5. Use bullet points for better readability\n6. Focus on complaints with higher relevance scores (ignore scores below 0.3)\n7. If you notice contradictions or inconsistencies, point them out\n8. If multiple complaints show a pattern, summarize it with supporting quotes\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\n\u2022 Major credit card companies tend to have higher complaint rates for disputed resolutions (ID 3811140, relevance 0.31)\n\u2022 Credit card companies tend to have lower complaint rates for gripes about interest rates (ID 3567584, relevance 0.30)\n\u2022 Credit card companies tend to have higher complaint rates for disputes related to identity theft (ID 2717333, relevance 0.30)\n\u2022 Credit card companies tend to have lower complaint rates for complaints related to closing and canceling accounts (ID 3567584, relevance 0.30)\n\u2022 Credit card companies tend to have higher complaint rates for disputes related to non-monetary relief (ID 3567584, relevance 0.30)\n\n\u2022 Major credit card companies tend to have higher complaint rates for disputed resolutions (ID 3811140, relevance 0.31)\n\u2022 Credit card companies tend to have lower complaint rates for gripes about interest rates (ID 3567584, relevance 0.30)\n\u2022 Credit card companies tend to have higher complaint rates for disputes related to identity theft (",
+    "chunks": [
+      {
+        "id": "3811140",
+        "text": "disputed of the resolutions suggested by the card issuer in terms of what people are complaining abo..."
+      },
+      {
+        "id": "3567584",
+        "text": "that they should care about their customers i haven t used this credit card for a long time i feel c..."
+      }
+    ],
+    "expected_themes": [
+      "company comparison",
+      "issue types"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q4",
+    "category": "Customer Impact",
+    "question": "What are the typical financial impacts reported in personal loan complaints?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n\n\nQuestion: What are the typical financial impacts reported in personal loan complaints?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge\n2. If the context doesn't contain enough information, clearly state what's missing\n3. For each claim, quote the relevant text and cite its complaint ID\n4. Keep your response under 300 words\n5. Use bullet points for better readability\n6. Focus on complaints with higher relevance scores (ignore scores below 0.3)\n7. If you notice contradictions or inconsistencies, point them out\n8. If multiple complaints show a pattern, summarize it with supporting quotes\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Can determine overall trends as context covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing",
+    "chunks": [],
+    "expected_themes": [
+      "monetary impact",
+      "customer hardship"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q5",
+    "category": "Resolution Analysis",
+    "question": "How effective are banks at resolving money transfer complaints?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 5427576\nProduct: money transfer, virtual currency, or money service\nDate: 2022-04-09\nRelevance: 0.45\nContent: two money transfers were sent via money transfer to a bank account overseas the money never arrived to the intended recipients after numerous attempts to resolve the situation and get a refund they promised to resolve the situation within hours but failed to do so i submitted my complaint almost months ago\n\n\nQuestion: How effective are banks at resolving money transfer complaints?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge\n2. If the context doesn't contain enough information, clearly state what's missing\n3. For each claim, quote the relevant text and cite its complaint ID\n4. Keep your response under 300 words\n5. Use bullet points for better readability\n6. Focus on complaints with higher relevance scores (ignore scores below 0.3)\n7. If you notice contradictions or inconsistencies, point them out\n8. If multiple complaints show a pattern, summarize it with supporting quotes\n\nExample Good Response:\n\u2022 Based on complaint ID 12345 (relevance 0.8): \"customers reported frequent billing errors\" showing issues with transaction processing\n\u2022 Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions \"resolved within 24 hours\"\n\u2022 Cannot determine overall trends as context only covers 2022-2023\n\nExample Bad Response:\n\u2022 Most customers are satisfied (not supported by context)\n\u2022 Banks typically resolve issues quickly (contradicts available evidence)\n\u2022 Response times vary between 1-5 days (making up specific numbers)\n\nRemember: It's better to acknowledge limited information than to make unsupported claims.\n\nAnswer:\nBanks typically resolve issues quickly, but not always. The context doesn't provide enough information to determine whether the bank was effective in resolving the complaint. The specific complaint ID 12345 shows frequent billing errors, which could indicate that the bank's processing times were slow. However, the context only mentions one complaint ID 67890, which does not provide any information about resolution times. Overall, the context provides limited information to make a general statement about the effectiveness of banks in resolving money transfer complaints.",
+    "chunks": [
+      {
+        "id": "5427576",
+        "text": "two money transfers were sent via money transfer to a bank account overseas the money never arrived ..."
+      }
+    ],
+    "expected_themes": [
+      "resolution time",
+      "customer satisfaction"
+    ],
+    "quality_score": null,
+    "comments": null
+  }
+]
