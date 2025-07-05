@@ -323,11 +323,82 @@ pip install -r requirements.txt
    results = store.query(query_embedding, n_results=5)
    ```
 
+## Task 3: Building the RAG Core Logic and Evaluation
+
+### Completed Components
+
+1. **RAG Pipeline Implementation** (`src/models/rag_pipeline.py`)
+   - Integrated retriever with similarity search
+   - Robust prompt template with validation
+   - Response generation with LLM
+   - Comprehensive evaluation framework
+   - Average quality score: 3/5
+
+### Supporting Modules
+
+1. **LLM Interface** (`src/models/llm_interface.py`)
+
+   - Handles model interactions
+   - Manages generation parameters
+   - Error handling and retries
+
+2. **Text Processing** (`src/models/text_processor.py`)
+
+   - Document chunking
+   - Embedding generation
+   - Text cleaning and validation
+
+3. **Vector Store** (`src/models/vector_store.py`)
+   - Similarity search implementation
+   - Vector storage management
+   - Query optimization
+
+### Performance Metrics
+
+1. **Processing Statistics**
+
+   - Total Documents: 443,472
+   - Total Chunks: 1,336,041
+   - Average Chunks per Document: 3.01
+
+2. **Speed Metrics**
+   - Processing Speed: ~664 documents/second
+   - Average Query Time: < 100ms
+
+### How to Run
+
+1. **Run Evaluation**
+
+   ```bash
+   python scripts/evaluate_rag.py
+   ```
+
+2. **Use RAG Pipeline**
+
+   ```python
+   from src.models.rag_pipeline import RAGPipeline
+   from src.models.vector_store import VectorStore
+   from src.models.text_processor import TextProcessor
+
+   # Initialize components
+   vector_store = VectorStore(persist_directory="vector_store")
+   text_processor = TextProcessor()
+   pipeline = RAGPipeline(vector_store, text_processor)
+
+   # Run query
+   response, chunks = pipeline.query("What are common credit card issues?")
+   ```
+
 ## Development Status
 
 This project is organized into four main tasks:
 
 1. ✅ Exploratory Data Analysis and Data Preprocessing
 2. ✅ Text Chunking, Embedding, and Vector Store Indexing
-3. Building the RAG Core Logic and Evaluation
+3. ✅ Building the RAG Core Logic and Evaluation
+   - Implemented retriever with similarity search
+   - Designed robust prompt template
+   - Created generator with validation
+   - Completed evaluation with 5 test questions
+   - Average quality score: 3/5
 4. Creating an Interactive Chat Interface
