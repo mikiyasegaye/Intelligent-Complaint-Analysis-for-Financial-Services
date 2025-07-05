@@ -10,7 +10,7 @@ This module implements the core RAG (Retrieval Augmented Generation) logic inclu
 from src.models.llm_interface import LLMInterface
 from src.models.vector_store import VectorStore
 from src.models.text_processor import TextProcessor
-from config.config import TOP_K_CHUNKS
+from config.config import MODEL_NAME, TEMPERATURE, MAX_TOKENS
 from pathlib import Path
 import sys
 from typing import List, Dict, Any, Tuple
@@ -26,11 +26,12 @@ class RAGPipeline:
     """Implements the RAG pipeline for financial complaints analysis."""
 
     # Configuration
-    MIN_RELEVANCE_SCORE = 0.3
-    MAX_RESPONSE_LENGTH = 300
-    TEMPERATURE = 0.2
+    BASE_RELEVANCE_THRESHOLD = 0.2
+    MIN_CHUNKS = 3
+    MAX_RESPONSE_LENGTH = MAX_TOKENS
+    TEMPERATURE = TEMPERATURE
 
-    # Base prompt template
+    # Simplified prompt template
     PROMPT_TEMPLATE = """You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.
 
 Context:
@@ -39,50 +40,43 @@ Context:
 Question: {question}
 
 Instructions:
-1. Base your answer ONLY on the provided context - do not make assumptions or add external knowledge
-2. If the context doesn't contain enough information, clearly state what's missing
-3. For each claim, quote the relevant text and cite its complaint ID
-4. Keep your response under 300 words
-5. Use bullet points for better readability
-6. Focus on complaints with higher relevance scores (ignore scores below 0.3)
-7. If you notice contradictions or inconsistencies, point them out
-8. If multiple complaints show a pattern, summarize it with supporting quotes
+1. Base your answer ONLY on the provided context - do not make assumptions
+2. For each claim, quote the exact text and cite the complaint ID
+3. Keep your response under 300 words
+4. Use bullet points for better readability
+5. Focus on complaints with higher relevance scores
 
-Example Good Response:
-• Based on complaint ID 12345 (relevance 0.8): "customers reported frequent billing errors" showing issues with transaction processing
-• Limited information about resolution times - only one complaint (ID 67890, relevance 0.7) mentions "resolved within 24 hours"
-• Cannot determine overall trends as context only covers 2022-2023
+Response Format:
+• Main Findings:
+  - Finding 1 supported by quote from ID X (relevance Y)
+  - Finding 2 supported by quote from ID X (relevance Y)
 
-Example Bad Response:
-• Most customers are satisfied (not supported by context)
-• Banks typically resolve issues quickly (contradicts available evidence)
-• Response times vary between 1-5 days (making up specific numbers)
+• Data Limitations:
+  - What information is missing
+  - What time period is covered
 
-Remember: It's better to acknowledge limited information than to make unsupported claims.
+Remember: Only make claims that are directly supported by quotes from the context.
 
 Answer:"""
 
     def __init__(
         self,
-        vector_store_path: str = "vector_store",
-        model_name: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-        device: str = "auto"
+        vector_store: VectorStore,
+        text_processor: TextProcessor,
+        model_name: str = MODEL_NAME
     ):
         """Initialize the RAG pipeline.
 
         Args:
-            vector_store_path: Path to the vector store directory
+            vector_store: Vector store for retrieving relevant chunks
+            text_processor: Text processor for handling documents
             model_name: Name of the LLM to use
-            device: Device to run LLM on
         """
-        self.text_processor = TextProcessor()
-        self.vector_store = VectorStore(persist_directory=vector_store_path)
-        self.llm = LLMInterface(
-            model_name=model_name,
-            device=device
-        )
+        self.vector_store = vector_store
+        self.text_processor = text_processor
+        self.llm = LLMInterface(model_name=model_name)
 
-    def retrieve(self, question: str, k: int = TOP_K_CHUNKS) -> List[Dict[str, Any]]:
+    def retrieve(self, question: str, k: int = 10) -> List[Dict[str, Any]]:
         """Retrieve relevant chunks for a given question.
 
         Args:
@@ -101,47 +95,59 @@ Answer:"""
         )
         question_embedding = embeddings[0]
 
-        # Retrieve more chunks than needed to filter by relevance
-        results = self.vector_store.query(
-            query_embedding=question_embedding,
-            n_results=k * 2  # Get more chunks to filter
-        )
+        # Start with base threshold
+        threshold = self.BASE_RELEVANCE_THRESHOLD
+        min_chunks_found = False
 
-        # Format and filter results
-        formatted_results = []
-        seen_content = set()  # For deduplication
+        while not min_chunks_found:
+            # Retrieve chunks
+            results = self.vector_store.query(
+                query_embedding=question_embedding,
+                n_results=k * 2  # Get more chunks to filter
+            )
 
-        for i in range(len(results['ids'][0])):
-            distance = results['distances'][0][i]
-            relevance = 1.0 - distance
+            # Format and filter results
+            formatted_results = []
+            seen_content = set()  # For deduplication
 
-            # Skip low relevance chunks
-            if relevance < self.MIN_RELEVANCE_SCORE:
-                continue
+            for i in range(len(results['ids'][0])):
+                distance = results['distances'][0][i]
+                relevance = 1.0 - distance
 
-            content = results['documents'][0][i]
+                # Skip low relevance chunks
+                if relevance < threshold:
+                    continue
 
-            # Skip duplicate content
-            content_hash = hash(content)
-            if content_hash in seen_content:
-                continue
-            seen_content.add(content_hash)
+                content = results['documents'][0][i]
 
-            formatted_results.append({
-                'document': content,
-                'metadata': results['metadatas'][0][i],
-                'distance': distance,
-                'relevance': relevance
-            })
+                # Skip duplicate content
+                content_hash = hash(content)
+                if content_hash in seen_content:
+                    continue
+                seen_content.add(content_hash)
+
+                formatted_results.append({
+                    'document': content,
+                    'metadata': results['metadatas'][0][i],
+                    'distance': distance,
+                    'relevance': relevance
+                })
+
+            # Check if we have enough chunks
+            if len(formatted_results) >= self.MIN_CHUNKS or threshold <= 0.1:
+                min_chunks_found = True
+            else:
+                # Lower threshold and try again
+                threshold -= 0.05
 
         # Return top k unique, relevant results
         return formatted_results[:k]
 
     def _format_context(self, chunks: List[Dict[str, Any]]) -> str:
-        """Format retrieved chunks into context string.
+        """Format chunks into context string.
 
         Args:
-            chunks: List of retrieved chunks with metadata
+            chunks: List of chunks with their metadata
 
         Returns:
             Formatted context string
@@ -149,24 +155,27 @@ Answer:"""
         context_parts = []
 
         for i, chunk in enumerate(chunks, 1):
-            # Format metadata
+            # Get metadata
             metadata = chunk.get('metadata', {})
-            complaint_id = metadata.get('complaint_id', 'Unknown')
-            product = metadata.get('product', 'Unknown Product')
-            date = metadata.get('date_received', 'Unknown Date')
+            complaint_id = metadata.get('complaint_id', 'unknown')
+            product = metadata.get('product', 'unknown')
+            date = metadata.get('date', 'unknown')
+            relevance = chunk.get('relevance', 0.0)
 
-            # Format chunk text
-            text = chunk.get('document', '').strip()
-            distance = chunk.get('distance', 0.0)
-
-            # Combine into a formatted string
-            chunk_text = f"[Complaint {i}]\nID: {complaint_id}\nProduct: {product}\nDate: {date}\nRelevance: {1.0 - distance:.2f}\nContent: {text}\n"
-            context_parts.append(chunk_text)
+            # Format chunk
+            context_parts.append(
+                f"[Complaint {i}]\n"
+                f"ID: {complaint_id}\n"
+                f"Product: {product}\n"
+                f"Date: {date}\n"
+                f"Relevance: {relevance:.2f}\n"
+                f"Content: {chunk.get('document', '')}\n"
+            )
 
         return "\n\n".join(context_parts)
 
     def _validate_response(self, response: str, chunks: List[Dict[str, Any]]) -> bool:
-        """Validate that response only contains information from chunks.
+        """Validate that response only contains information from chunks and follows template.
 
         Args:
             response: Generated response
@@ -177,7 +186,7 @@ Answer:"""
         """
         # Extract all complaint IDs mentioned in response
         import re
-        cited_ids = set(re.findall(r'ID: (\d+)', response))
+        cited_ids = set(re.findall(r'ID (\d+)', response))
 
         # Get actual chunk IDs
         chunk_ids = set(
@@ -198,7 +207,66 @@ Answer:"""
             for quote in quotes
         )
 
-        return valid_ids and valid_length and valid_quotes
+        # Check for proper quote citation format
+        quote_patterns = [
+            # "quote" from ID X (relevance Y)
+            r'"[^"]+" from ID \d+ \(relevance \d+\.\d+\)',
+            # "quote" (ID X, relevance Y)
+            r'"[^"]+" \(ID \d+, relevance \d+\.\d+\)',
+        ]
+        has_proper_citations = any(
+            re.search(pattern, response)
+            for pattern in quote_patterns
+        )
+
+        # Check for template sections
+        required_sections = [
+            "Main Findings:",
+            "Data Limitations:"
+        ]
+        has_template = all(
+            section in response for section in required_sections)
+
+        # Check bullet point formatting
+        # At least one bullet per section
+        has_bullets = response.count("•") >= 2
+
+        # Check for unsupported claims
+        unsupported_phrases = [
+            "most customers",
+            "typically",
+            "usually",
+            "generally",
+            "always",
+            "never",
+            "all customers",
+            "no customers",
+            "many customers",
+            "few customers",
+            "several customers",
+            "multiple customers"
+        ]
+        no_unsupported = not any(phrase in response.lower()
+                                 for phrase in unsupported_phrases)
+
+        # Check for repetition (same sentence appearing multiple times)
+        sentences = [s.strip() for s in response.split('.') if s.strip()]
+        sentence_counts = {}
+        for s in sentences:
+            if s in sentence_counts:
+                sentence_counts[s] += 1
+            else:
+                sentence_counts[s] = 1
+        no_repetition = all(count == 1 for count in sentence_counts.values())
+
+        # Check for proper finding format
+        finding_pattern = r'Finding \d+ supported by quote'
+        has_proper_findings = bool(re.search(finding_pattern, response))
+
+        # All checks must pass
+        return (valid_ids and valid_length and valid_quotes and no_repetition
+                and has_template and has_bullets and no_unsupported
+                and has_proper_citations and has_proper_findings)
 
     def generate_response(self, question: str, chunks: List[Dict[str, Any]]) -> str:
         """Generate a response using the LLM.
@@ -235,7 +303,7 @@ Answer:"""
             response = self.llm.generate(
                 prompt,
                 max_new_tokens=self.MAX_RESPONSE_LENGTH,
-                temperature=self.TEMPERATURE * 0.5  # Even more conservative
+                temperature=self.TEMPERATURE * 0.5  # More conservative
             )
 
         return response

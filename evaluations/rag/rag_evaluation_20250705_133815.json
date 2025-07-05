@@ -1,0 +1,113 @@
+[
+  {
+    "question_id": "Q1",
+    "category": "Product Issues",
+    "question": "What are the most common issues reported with credit cards?",
+    "response": "Main Findings:\n- Finding 1: Complaint ID X (relevance Y)\n- Finding 2: Complaint ID X (relevance Y)\n\nData Limitations:\n- What information is missing: The exact nature of the issues reported with credit cards.\n- What time period is covered: The complaints are from various time periods, but the exact time frame is not specified.",
+    "chunks": [
+      {
+        "id": "3566299",
+        "text": "kinds of credit card transactions and related complications..."
+      },
+      {
+        "id": "4746933",
+        "text": "credit cards i am asking for an investigation to this matter..."
+      }
+    ],
+    "expected_themes": [
+      "fees",
+      "interest rates",
+      "billing disputes"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q2",
+    "category": "Temporal Analysis",
+    "question": "Have there been any noticeable trends in savings account complaints over time?",
+    "response": "Main Findings:\n- Finding 1: There is a noticeable trend of complaints about deceptive practices regarding high yielding interest regarding performance savings accounts. This trend is supported by the complaint ID: 11561262 (relevance score: 0.29).\n- Finding 2: There is a noticeable trend of complaints about the bank's failure to raise interest rates on older products, causing additional customer harm. This trend is supported by the complaint ID: 6889173 (relevance score: 0.21).\n\nData Limitations:\n- What information is missing: The exact number of complaints over time.\n- What time period is covered: The time period is not specified in the context.",
+    "chunks": [
+      {
+        "id": "3720288",
+        "text": "other people this may have happened to and how many people would not have noticed or been aware that..."
+      },
+      {
+        "id": "8093579",
+        "text": "savings will adhere to proper notification and communication procedures in the future i appreciate y..."
+      }
+    ],
+    "expected_themes": [
+      "temporal patterns",
+      "issue frequency"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q3",
+    "category": "Company Comparison",
+    "question": "How do complaint patterns differ between major credit card companies?",
+    "response": "Main Findings:\n- Finding 1: Complaints about billing issues represented the largest percentage of complaints, as stated in Complaint 1 (ID: 3811140).\n- Finding 2: Complaints about interest rates were the second most common, as stated in Complaint 2 (ID: 3567584).\n\nData Limitations:\n- What information is missing: The exact number of complaints for each category is not provided.\n- What time period is covered: The complaints are not specified to be from a specific time period.",
+    "chunks": [
+      {
+        "id": "3811140",
+        "text": "disputed of the resolutions suggested by the card issuer in terms of what people are complaining abo..."
+      },
+      {
+        "id": "3567584",
+        "text": "that they should care about their customers i haven t used this credit card for a long time i feel c..."
+      }
+    ],
+    "expected_themes": [
+      "company comparison",
+      "issue types"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q4",
+    "category": "Customer Impact",
+    "question": "What are the typical financial impacts reported in personal loan complaints?",
+    "response": "Main Findings:\n- Finding 1: Complaint ID X (relevance Y) reported financial hardship due to not receiving funds for short term and bridge loans.\n- Finding 2: Complaint ID X (relevance Y) reported negative remarks on their credit report.\n\nData Limitations:\n- What information is missing: The exact financial impacts reported in each complaint are not provided.\n- What time period is covered: The complaints span over an unknown period of time.",
+    "chunks": [
+      {
+        "id": "6474469",
+        "text": "has caused financial hardship on all of my businesses and myself personally due to not receiving the..."
+      },
+      {
+        "id": "13193604",
+        "text": "payments and negative remarks on my credit report that come from this situation..."
+      }
+    ],
+    "expected_themes": [
+      "monetary impact",
+      "customer hardship"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q5",
+    "category": "Resolution Analysis",
+    "question": "How effective are banks at resolving money transfer complaints?",
+    "response": "Main Findings:\n- Finding 1: Banks are effective at resolving complaints related to money transfers, virtual currencies, and money services. This is supported by the complaint ID 5427576, where the customer reported two unsuccessful money transfers and a promise to resolve the situation within hours.\n- Finding 2: Banks are not effective at resolving complaints related to inadequate customer service and unfair practices. This is supported by the complaint ID 11724650, where the customer reported a lack of timely and effective measures to prevent fraud on the platform.\n\nData Limitations:\n- What information is missing: The context does not provide information on the specific actions taken by banks to resolve complaints or the timeframe within which they were resolved.\n- What time period is covered: The context does not specify the time period over which the complaints were filed or the resolution process followed by the banks.",
+    "chunks": [
+      {
+        "id": "5427576",
+        "text": "two money transfers were sent via money transfer to a bank account overseas the money never arrived ..."
+      },
+      {
+        "id": "11724650",
+        "text": "i am filing a complaint against cash app block inc due to inadequate customer service and unfair pra..."
+      }
+    ],
+    "expected_themes": [
+      "resolution time",
+      "customer satisfaction"
+    ],
+    "quality_score": null,
+    "comments": null
+  }
+]
