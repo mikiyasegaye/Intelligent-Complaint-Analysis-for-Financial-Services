@@ -1,0 +1,113 @@
+[
+  {
+    "question_id": "Q1",
+    "category": "Product Issues",
+    "question": "What are the most common issues reported with credit cards?",
+    "expected_themes": [
+      "fees",
+      "interest rates",
+      "billing disputes"
+    ],
+    "response": "Based on the complaints, the financial impacts include:\n\n\u2022 [ID 3566299] kinds of credit card transactions and related complications\n\n\u2022 [ID 4746933] credit cards i am asking for an investigation to this matter\n\n\u2022 [ID 7880445] common which people has been dealing for over half a decade and is unacceptable i should be reimbursed every dollar i m forced to used out my credit card",
+    "chunks": [
+      {
+        "id": "3566299",
+        "text": "kinds of credit card transactions and related complications..."
+      },
+      {
+        "id": "4746933",
+        "text": "credit cards i am asking for an investigation to this matter..."
+      }
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q2",
+    "category": "Temporal Analysis",
+    "question": "Have there been any noticeable trends in savings account complaints over time?",
+    "expected_themes": [
+      "temporal patterns",
+      "issue frequency"
+    ],
+    "response": "Based on the complaints, the financial impacts include:\n\n\u2022 [ID 3720288] other people this may have happened to and how many people would not have noticed or been aware that this could ve been happening on their savings account for months and months\n\n\u2022 [ID 8093579] savings will adhere to proper notification and communication procedures in the future i appreciate your attention to this matter and hope for a swift resolution to this issue please find attached copies of relevant documents including account statements and any communication with marcus savings thank you for your assistance in addressing this complaint i look forward to your prompt response\n\n\u2022 [ID 11561262] i would like a full investigation into capital ones savings account i believe there are deceptive practices regarding high yielding interest regarding performance savings account",
+    "chunks": [
+      {
+        "id": "3720288",
+        "text": "other people this may have happened to and how many people would not have noticed or been aware that this could ve been happening on their savings account for months and months..."
+      },
+      {
+        "id": "8093579",
+        "text": "savings will adhere to proper notification and communication procedures in the future i appreciate your attention to this matter and hope for a swift resolution to this issue please find attached copi..."
+      }
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q3",
+    "category": "Company Comparison",
+    "question": "How do complaint patterns differ between major credit card companies?",
+    "expected_themes": [
+      "company comparison",
+      "issue types"
+    ],
+    "response": "Based on the complaints, the financial impacts include:\n\n\u2022 [ID 3811140] disputed of the resolutions suggested by the card issuer in terms of what people are complaining about billing issues represented the largest percentage of complaints followed by gripes about interest rates identity theft credit reporting or closing and canceling accounts in the end the majority of all credit card complaints are resolved with merely an explanation from the card company complaints resulted in monetary relief of the time and with some sort of non monetary relief in another of\n\n\u2022 [ID 3567584] that they should care about their customers i haven t used this credit card for a long time i feel credit card companies don t care about customers at all i don t think this company has dispute area there wasn t a option\n\n\u2022 [ID 2717333] i have maintained dozens of credit cards during the last years and i have never had to complain about the service i was getting from a credit card company unfortunately the credit card and charge card companies have suddenly changed their operational policies attacking customers and flouting the fair credit and reporting act a review of my accounts will show that i have always paid my credit card bills in full and on time each month and in the rare instances where credit card payments have been",
+    "chunks": [
+      {
+        "id": "3811140",
+        "text": "disputed of the resolutions suggested by the card issuer in terms of what people are complaining about billing issues represented the largest percentage of complaints followed by gripes about interest..."
+      },
+      {
+        "id": "3567584",
+        "text": "that they should care about their customers i haven t used this credit card for a long time i feel credit card companies don t care about customers at all i don t think this company has dispute area t..."
+      }
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q4",
+    "category": "Customer Impact",
+    "question": "What are the typical financial impacts reported in personal loan complaints?",
+    "expected_themes": [
+      "monetary impact",
+      "customer hardship"
+    ],
+    "response": "Based on the complaints, the financial impacts include:\n\n\u2022 [ID 6474469] has caused financial hardship on all of my businesses and myself personally due to not receiving the funds to payback short term and bridge loans to close the loan facility i will be filing additional complaints regarding the short term loans and bridge loans due to fraudulent lending practices and misleading communications from the [REDACTED] [REDACTED] [REDACTED] lenders and other lenders attached are all available documents i have regarding the loan facility\n\n\u2022 [ID 13193604] payments and negative remarks on my credit report that come from this situation\n\n\u2022 [ID 3751177] any type of loans now or buy anything due to this negative remark on my credit report",
+    "chunks": [
+      {
+        "id": "6474469",
+        "text": "has caused financial hardship on all of my businesses and myself personally due to not receiving the funds to payback short term and bridge loans to close the loan facility i will be filing additional..."
+      },
+      {
+        "id": "13193604",
+        "text": "payments and negative remarks on my credit report that come from this situation..."
+      }
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q5",
+    "category": "Resolution Analysis",
+    "question": "How effective are banks at resolving money transfer complaints?",
+    "expected_themes": [
+      "resolution time",
+      "customer satisfaction"
+    ],
+    "response": "Based on the complaints, the financial impacts include:\n\n\u2022 [ID 5427576] two money transfers were sent via money transfer to a bank account overseas the money never arrived to the intended recipients after numerous attempts to resolve the situation and get a refund they promised to resolve the situation within hours but failed to do so i submitted my complaint almost months ago",
+    "chunks": [
+      {
+        "id": "5427576",
+        "text": "two money transfers were sent via money transfer to a bank account overseas the money never arrived to the intended recipients after numerous attempts to resolve the situation and get a refund they pr..."
+      },
+      {
+        "id": "11724650",
+        "text": "i am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violate the cunsomer financial protection act cfpa specifically cash app failed to take..."
+      }
+    ],
+    "quality_score": null,
+    "comments": null
+  }
+]

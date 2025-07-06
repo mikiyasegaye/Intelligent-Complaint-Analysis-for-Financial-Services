@@ -31,31 +31,24 @@ class RAGPipeline:
     MAX_RESPONSE_LENGTH = MAX_TOKENS
     TEMPERATURE = TEMPERATURE
 
-    # Simplified prompt template
-    PROMPT_TEMPLATE = """You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.
+    PROMPT_TEMPLATE = """You are an expert financial services analyst chatbot. Analyze the provided customer complaints and answer the question.
 
-Context:
+Context (relevant customer complaints):
 {context}
 
 Question: {question}
 
-Instructions:
-1. Base your answer ONLY on the provided context - do not make assumptions
-2. For each claim, quote the exact text and cite the complaint ID
-3. Keep your response under 300 words
-4. Use bullet points for better readability
-5. Focus on complaints with higher relevance scores
+Guidelines:
+1. Start with a clear introduction of what you found in the complaints data
+2. Group similar complaints and identify key patterns
+3. For each pattern:
+   - Describe the issue
+   - Provide a specific example from the complaints
+   - Explain the impact on customers
+4. Provide actionable recommendations based on the patterns
+5. End with a brief conclusion
 
-Response Format:
-• Main Findings:
-  - Finding 1 supported by quote from ID X (relevance Y)
-  - Finding 2 supported by quote from ID X (relevance Y)
-
-• Data Limitations:
-  - What information is missing
-  - What time period is covered
-
-Remember: Only make claims that are directly supported by quotes from the context.
+Format your response with clear paragraph breaks between sections. Use the actual content from the complaints - do not make assumptions or add issues that aren't present in the complaints.
 
 Answer:"""
 
@@ -144,33 +137,15 @@ Answer:"""
         return formatted_results[:k]
 
     def _format_context(self, chunks: List[Dict[str, Any]]) -> str:
-        """Format chunks into context string.
-
-        Args:
-            chunks: List of chunks with their metadata
-
-        Returns:
-            Formatted context string
-        """
+        """Format chunks into context string."""
         context_parts = []
 
-        for i, chunk in enumerate(chunks, 1):
-            # Get metadata
-            metadata = chunk.get('metadata', {})
-            complaint_id = metadata.get('complaint_id', 'unknown')
-            product = metadata.get('product', 'unknown')
-            date = metadata.get('date', 'unknown')
-            relevance = chunk.get('relevance', 0.0)
-
-            # Format chunk
+        for chunk in chunks:
+            complaint_id = chunk.get('metadata', {}).get(
+                'complaint_id', 'unknown')
+            content = chunk.get('document', '')
             context_parts.append(
-                f"[Complaint {i}]\n"
-                f"ID: {complaint_id}\n"
-                f"Product: {product}\n"
-                f"Date: {date}\n"
-                f"Relevance: {relevance:.2f}\n"
-                f"Content: {chunk.get('document', '')}\n"
-            )
+                f"Complaint {complaint_id}:\n{content.strip()}")
 
         return "\n\n".join(context_parts)
 
@@ -269,58 +244,161 @@ Answer:"""
                 and has_proper_citations and has_proper_findings)
 
     def generate_response(self, question: str, chunks: List[Dict[str, Any]]) -> str:
-        """Generate a response using the LLM.
+        """Generate a response using the complaint data."""
+        if not chunks:
+            return "I couldn't find any relevant complaints matching your query. Could you try rephrasing or asking about something else?"
 
-        Args:
-            question: The user's question
-            chunks: Retrieved relevant chunks
-
-        Returns:
-            Generated response
-        """
-        # Sort chunks by relevance
-        chunks = sorted(chunks, key=lambda x: x.get('distance', 1.0))
-
-        # Format the context
+        # Format context for LLM
         context = self._format_context(chunks)
 
-        # Create the full prompt
+        # Generate response using LLM
         prompt = self.PROMPT_TEMPLATE.format(
             context=context,
             question=question
         )
 
-        # Generate response using LLM
-        response = self.llm.generate(
-            prompt,
-            max_new_tokens=self.MAX_RESPONSE_LENGTH,
-            temperature=self.TEMPERATURE
-        )
+        # Add a reminder to focus on the actual complaints
+        prompt += "\n\nRemember: Base your analysis ONLY on the complaints provided. Do not include generic issues or assumptions not supported by the complaint data."
 
-        # Validate response
-        if not self._validate_response(response, chunks):
-            # If validation fails, regenerate with stricter parameters
-            response = self.llm.generate(
-                prompt,
-                max_new_tokens=self.MAX_RESPONSE_LENGTH,
-                temperature=self.TEMPERATURE * 0.5  # More conservative
-            )
+        response = self.llm.generate(prompt)
+
+        # Add sources invisibly
+        sources = [f"Complaint #{chunk.get('metadata', {}).get('complaint_id', 'Unknown')}"
+                   for chunk in chunks[:3]]
+        response += "\n<!-- Sources: " + ", ".join(sources) + " -->"
 
         return response
 
+    def _extract_quote(self, text: str, max_length: int = 100) -> str:
+        """Extract a clean, concise quote from the text."""
+        # Clean up the text
+        text = text.strip()
+        if len(text) > max_length:
+            # Find the last complete sentence within limit
+            end_idx = text[:max_length].rfind('.')
+            if end_idx == -1:
+                end_idx = text[:max_length].rfind(' ')
+            if end_idx == -1:
+                end_idx = max_length
+            text = text[:end_idx] + "..."
+
+        # Clean up common issues in complaint text
+        text = text.replace(" i ", " I ")  # Fix common pronoun
+        text = text.capitalize()  # Capitalize first letter
+        text = text.replace(" dont ", " don't ")  # Fix common contractions
+        text = text.replace(" cant ", " can't ")
+        text = text.replace(" didnt ", " didn't ")
+
+        return text
+
     def query(self, question: str) -> Tuple[str, List[Dict[str, Any]]]:
-        """Process a question through the full RAG pipeline.
+        """Process a question and return a response with supporting chunks.
 
         Args:
-            question: The user's question
+            question: User's question
 
         Returns:
-            Tuple of (generated response, retrieved chunks)
+            Tuple of (response text, supporting chunks)
         """
-        # Retrieve relevant chunks
-        chunks = self.retrieve(question)
+        try:
+            chunks = self.retrieve(question)
+            response = self.generate_response(question, chunks)
+            return response, chunks[:3]
+        except Exception as e:
+            print(f"Error in RAG pipeline: {str(e)}")
+            return (
+                "I encountered an issue while processing your question. "
+                "However, I can show you the relevant complaints I found. "
+                "Would you like to see them?",
+                chunks[:3] if chunks else []
+            )
 
-        # Generate response
-        response = self.generate_response(question, chunks)
+    def _extract_topics(self, chunks: List[Dict[str, Any]]) -> Dict[str, List[Dict]]:
+        """Extract main topics and their examples from chunks."""
+        topics = {
+            "Financial Impact": [],
+            "Customer Service": [],
+            "Process Issues": [],
+            "Technical Problems": []
+        }
 
-        return response, chunks
+        for chunk in chunks:
+            if chunk.get('relevance', 0) > 0.2:
+                content = chunk.get('document', '').lower()
+                id = chunk.get('metadata', {}).get('complaint_id', 'Unknown')
+
+                example = {'id': id, 'text': chunk.get('document', '')}
+
+                if any(word in content for word in ['money', 'payment', 'fee', 'charge', 'cost']):
+                    topics["Financial Impact"].append(example)
+                if any(word in content for word in ['service', 'representative', 'support', 'help']):
+                    topics["Customer Service"].append(example)
+                if any(word in content for word in ['process', 'procedure', 'application', 'approval']):
+                    topics["Process Issues"].append(example)
+                if any(word in content for word in ['website', 'app', 'online', 'system']):
+                    topics["Technical Problems"].append(example)
+
+        # Remove empty topics
+        return {k: v for k, v in topics.items() if v}
+
+    def _identify_patterns(self, chunks: List[Dict[str, Any]]) -> List[str]:
+        """Identify patterns in the complaints."""
+        patterns = []
+
+        # Count common themes
+        themes = {}
+        for chunk in chunks:
+            content = chunk.get('document', '').lower()
+
+            if 'credit' in content and 'report' in content:
+                themes['credit_report'] = themes.get('credit_report', 0) + 1
+            if 'delay' in content or 'time' in content:
+                themes['delays'] = themes.get('delays', 0) + 1
+            if 'communication' in content or 'response' in content:
+                themes['communication'] = themes.get('communication', 0) + 1
+
+        # Generate pattern insights
+        if themes.get('credit_report', 0) > 1:
+            patterns.append(
+                "There's a recurring pattern of credit reporting issues affecting customers")
+        if themes.get('delays', 0) > 1:
+            patterns.append("Processing delays appear to be a common concern")
+        if themes.get('communication', 0) > 1:
+            patterns.append(
+                "Communication problems are frequently mentioned in complaints")
+
+        return patterns
+
+    def _get_recent_examples(self, chunks: List[Dict[str, Any]]) -> List[Dict]:
+        """Get the most recent complaint examples."""
+        dated_chunks = []
+        for chunk in chunks:
+            date = chunk.get('metadata', {}).get('date', '2020-01-01')
+            dated_chunks.append((date, chunk))
+
+        dated_chunks.sort(reverse=True)
+        return [chunk for _, chunk in dated_chunks[:2]]
+
+    def _generate_insight(self, topic: str) -> str:
+        """Generate an insight based on the topic."""
+        insights = {
+            "Financial Impact": "this is causing significant financial strain on customers",
+            "Customer Service": "there may be room for improvement in customer support processes",
+            "Process Issues": "the current procedures might need review and optimization",
+            "Technical Problems": "there could be underlying system issues that need addressing"
+        }
+        return insights.get(topic, "this is an area that merits attention")
+
+    def _generate_conclusion(self, topics: Dict[str, List[Dict]], patterns: List[str]) -> str:
+        """Generate a conclusion based on topics and patterns."""
+        n_topics = len(topics)
+        n_patterns = len(patterns)
+
+        if n_topics > 2 and n_patterns > 1:
+            return "there are multiple systemic issues that need to be addressed"
+        elif n_topics > 2:
+            return "customers are facing several distinct challenges"
+        elif n_patterns > 1:
+            return "there are consistent patterns in customer experiences"
+        else:
+            return "while there are specific issues to address, they appear to be manageable with proper attention"
