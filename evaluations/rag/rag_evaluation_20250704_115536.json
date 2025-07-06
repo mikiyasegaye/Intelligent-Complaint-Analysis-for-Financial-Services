@@ -1,0 +1,113 @@
+[
+  {
+    "question_id": "Q1",
+    "category": "Product Issues",
+    "question": "What are the most common issues reported with credit cards?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3566299\nProduct: credit card or prepaid card\nDate: 2020-03-13\nRelevance: 0.40\nContent: kinds of credit card transactions and related complications\n\n\n[Complaint 2]\nID: 4746933\nProduct: credit card or prepaid card\nDate: 2021-09-23\nRelevance: 0.32\nContent: credit cards i am asking for an investigation to this matter\n\n\n[Complaint 3]\nID: 7880445\nProduct: checking or savings account\nDate: 2023-11-20\nRelevance: 0.32\nContent: common which people has been dealing for over half a decade and is unacceptable i should be reimbursed every dollar i m forced to used out my credit card\n\n\n[Complaint 4]\nID: 10069794\nProduct: credit card\nDate: 2024-09-05\nRelevance: 0.32\nContent: the credit card company because no one is doing [REDACTED] about any of these issues\n\n\n[Complaint 5]\nID: 12016413\nProduct: credit card\nDate: 2025-02-10\nRelevance: 0.31\nContent: other major credit card issuers offer one time exceptions to responsible long term customers who experience unforeseen financial disruptions this lack of flexibility penalizes customers who have demonstrated financial responsibility for a decade and does not align with industry best practices\n\n\nQuestion: What are the most common issues reported with credit cards?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions\n2. For each claim, quote the exact text and cite the complaint ID\n3. Keep your response under 300 words\n4. Use bullet points for better readability\n5. Focus on complaints with higher relevance scores\n\nResponse Format:\n\u2022 Main Findings:\n  - Finding 1 supported by quote from ID X (relevance Y)\n  - Finding 2 supported by quote from ID X (relevance Y)\n\n\u2022 Data Limitations:\n  - What information is missing\n  - What time period is covered\n\nRemember: Only make claims that are directly supported by quotes from the context.\n\nAnswer:\n1. The most common issue reported with credit cards is credit card fraud.\n\nContext:\nID: 3566299\nProduct: credit card or prepaid card\nDate: 2020-03-13\nRelevance: 0.40\nContent: kinds of credit card transactions and related complications\n\nID: 4746933\nProduct: credit card or prepaid card\nDate: 2021-09-23\nRelevance: 0.32\nContent: credit cards i am asking for an investigation to this matter\n\nID: 7880445\nProduct: checking or savings account\nDate: 2023-11-20\nRelevance: 0.32\nContent: common which people has been dealing for over half a decade and is unacceptable i should be reimbursed every dollar i m forced to used out my credit card\n\nID: 10069794\nProduct: credit card\nDate: 2024-09-05\nRelevance: 0.32\nContent: the credit card company because no one is doing [REDACTED] about any of these issues\n\nID: 12016413\n",
+    "chunks": [
+      {
+        "id": "3566299",
+        "text": "kinds of credit card transactions and related complications..."
+      },
+      {
+        "id": "4746933",
+        "text": "credit cards i am asking for an investigation to this matter..."
+      }
+    ],
+    "expected_themes": [
+      "fees",
+      "interest rates",
+      "billing disputes"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q2",
+    "category": "Temporal Analysis",
+    "question": "Have there been any noticeable trends in savings account complaints over time?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3720288\nProduct: checking or savings account\nDate: 2020-06-29\nRelevance: 0.36\nContent: other people this may have happened to and how many people would not have noticed or been aware that this could ve been happening on their savings account for months and months\n\n\n[Complaint 2]\nID: 8093579\nProduct: checking or savings account\nDate: 2024-01-02\nRelevance: 0.30\nContent: savings will adhere to proper notification and communication procedures in the future i appreciate your attention to this matter and hope for a swift resolution to this issue please find attached copies of relevant documents including account statements and any communication with marcus savings thank you for your assistance in addressing this complaint i look forward to your prompt response\n\n\n[Complaint 3]\nID: 11561262\nProduct: checking or savings account\nDate: 2025-01-17\nRelevance: 0.29\nContent: i would like a full investigation into capital ones savings account i believe there are deceptive practices regarding high yielding interest regarding performance savings account\n\n\n[Complaint 4]\nID: 6706980\nProduct: checking or savings account\nDate: 2023-03-17\nRelevance: 0.27\nContent: was due their advertising of high rates for savings and we split across accounts to stay within fdic limits\n\n\n[Complaint 5]\nID: 2646657\nProduct: checking or savings account\nDate: 2017-08-18\nRelevance: 0.23\nContent: and when you talk about their billions of savings accounts two days adds up to a lot of money for them spread out over lots of little consumers that probably will never notice that certainly does n t make it right and they should pay depositors fairly just like they charge their credit card holders fairly\n\n\nQuestion: Have there been any noticeable trends in savings account complaints over time?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions\n2. For each claim, quote the exact text and cite the complaint ID\n3. Keep your response under 300 words\n4. Use bullet points for better readability\n5. Focus on complaints with higher relevance scores\n\nResponse Format:\n\u2022 Main Findings:\n  - Finding 1 supported by quote from ID X (relevance Y)\n  - Finding 2 supported by quote from ID X (relevance Y)\n\n\u2022 Data Limitations:\n  - What information is missing\n  - What time period is covered\n\nRemember: Only make claims that are directly supported by quotes from the context.\n\nAnswer:\n1. There have been noticeable trends in savings account complaints over time.\n\nContext:\nID: 3720288\nProduct: checking or savings account\nDate: 2020-06-29\nRelevance: 0.36\nContent: other people this may have happened to and how many people would not have noticed or been aware that this could ve been happening on their savings account for months and months\n\nID: 8093579\nProduct: checking or savings account\nDate: 2024-01-02\nRelevance: 0.30\nContent: savings will adhere to proper notification and communication procedures in the future i appreciate your attention to this matter and hope for a swift resolution to this issue please find attached copies of relevant documents including account statements and any communication with marcus savings thank you for your assistance in addressing this complaint i look forward to your prompt response\n\nID: 11561262\nProduct: checking or savings account\nDate: 2025-01-17\nRelevance: 0.29\nContent: i would like a full investigation into capital ones savings account i believe there are deceptive practices regarding high yielding interest regarding performance savings account\n\nID: 67",
+    "chunks": [
+      {
+        "id": "3720288",
+        "text": "other people this may have happened to and how many people would not have noticed or been aware that..."
+      },
+      {
+        "id": "8093579",
+        "text": "savings will adhere to proper notification and communication procedures in the future i appreciate y..."
+      }
+    ],
+    "expected_themes": [
+      "temporal patterns",
+      "issue frequency"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q3",
+    "category": "Company Comparison",
+    "question": "How do complaint patterns differ between major credit card companies?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 3811140\nProduct: credit card or prepaid card\nDate: 2020-08-24\nRelevance: 0.31\nContent: disputed of the resolutions suggested by the card issuer in terms of what people are complaining about billing issues represented the largest percentage of complaints followed by gripes about interest rates identity theft credit reporting or closing and canceling accounts in the end the majority of all credit card complaints are resolved with merely an explanation from the card company complaints resulted in monetary relief of the time and with some sort of non monetary relief in another of\n\n\n[Complaint 2]\nID: 3567584\nProduct: credit card or prepaid card\nDate: 2020-03-15\nRelevance: 0.30\nContent: that they should care about their customers i haven t used this credit card for a long time i feel credit card companies don t care about customers at all i don t think this company has dispute area there wasn t a option\n\n\n[Complaint 3]\nID: 2717333\nProduct: credit card or prepaid card\nDate: 2017-11-01\nRelevance: 0.30\nContent: i have maintained dozens of credit cards during the last years and i have never had to complain about the service i was getting from a credit card company unfortunately the credit card and charge card companies have suddenly changed their operational policies attacking customers and flouting the fair credit and reporting act a review of my accounts will show that i have always paid my credit card bills in full and on time each month and in the rare instances where credit card payments have been\n\n\n[Complaint 4]\nID: 1543488\nProduct: credit card\nDate: 2015-08-29\nRelevance: 0.30\nContent: of similar instances from another credit card company as an example of what i am certain is the case with this credit card\n\n\n[Complaint 5]\nID: 5999901\nProduct: credit card or prepaid card\nDate: 2022-09-20\nRelevance: 0.30\nContent: information the other credit card company will be filed in a separate complaint\n\n\nQuestion: How do complaint patterns differ between major credit card companies?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions\n2. For each claim, quote the exact text and cite the complaint ID\n3. Keep your response under 300 words\n4. Use bullet points for better readability\n5. Focus on complaints with higher relevance scores\n\nResponse Format:\n\u2022 Main Findings:\n  - Finding 1 supported by quote from ID X (relevance Y)\n  - Finding 2 supported by quote from ID X (relevance Y)\n\n\u2022 Data Limitations:\n  - What information is missing\n  - What time period is covered\n\nRemember: Only make claims that are directly supported by quotes from the context.\n\nAnswer:\n1. Major credit card companies differ in their complaint patterns.\n\n- Credit card companies:\n  - Few complaints (0.31)\n  - Most complaints (0.30)\n  - Complaints result in monetary relief (0.30)\n  - Complaints result in non-monetary relief (0.30)\n\n- Prepaid card companies:\n  - Few complaints (0.30)\n  - Most complaints (0.30)\n  - Complaints result in monetary relief (0.30)\n  - Complaints result in non-monetary relief (0.30)\n\n2. Credit card companies tend to have higher relevance scores than prepaid card companies.\n\n- Credit card companies:\n  - Relevance score: 0.31\n  - Complaint ID: ID X\n\n- Prepaid card companies:\n  - Relevance score: 0.30\n  - Complaint ID: ID X\n\n3. Credit card companies tend to have higher complaint resolution rates than prepaid card companies.\n\n- Credit card companies:\n  - Resolution rate: 0.61\n  - Complaint ID: ID X\n\n- Prepa",
+    "chunks": [
+      {
+        "id": "3811140",
+        "text": "disputed of the resolutions suggested by the card issuer in terms of what people are complaining abo..."
+      },
+      {
+        "id": "3567584",
+        "text": "that they should care about their customers i haven t used this credit card for a long time i feel c..."
+      }
+    ],
+    "expected_themes": [
+      "company comparison",
+      "issue types"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q4",
+    "category": "Customer Impact",
+    "question": "What are the typical financial impacts reported in personal loan complaints?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 6474469\nProduct: money transfer, virtual currency, or money service\nDate: 2023-01-24\nRelevance: 0.29\nContent: has caused financial hardship on all of my businesses and myself personally due to not receiving the funds to payback short term and bridge loans to close the loan facility i will be filing additional complaints regarding the short term loans and bridge loans due to fraudulent lending practices and misleading communications from the [REDACTED] [REDACTED] [REDACTED] lenders and other lenders attached are all available documents i have regarding the loan facility\n\n\n[Complaint 2]\nID: 13193604\nProduct: credit card\nDate: 2025-04-26\nRelevance: 0.25\nContent: payments and negative remarks on my credit report that come from this situation\n\n\n[Complaint 3]\nID: 3751177\nProduct: credit card or prepaid card\nDate: 2020-07-17\nRelevance: 0.24\nContent: any type of loans now or buy anything due to this negative remark on my credit report\n\n\n[Complaint 4]\nID: 4343679\nProduct: credit card or prepaid card\nDate: 2021-05-02\nRelevance: 0.24\nContent: report which is resulting in increased mortgage interest aka financial damages i was a loyal kohl s customer over years and my credit report is otherwise flawless i have a strong history proving all of my accounts are paid in full monthly this is an auto payment error on their side\n\n\n[Complaint 5]\nID: 12978206\nProduct: credit card\nDate: 2025-04-14\nRelevance: 0.23\nContent: impact my credit report i am prepared to provide supporting documentation including statements payment records and credit score history thank you for your attention to this matter i look forward to your prompt resolution\n\n\nQuestion: What are the typical financial impacts reported in personal loan complaints?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions\n2. For each claim, quote the exact text and cite the complaint ID\n3. Keep your response under 300 words\n4. Use bullet points for better readability\n5. Focus on complaints with higher relevance scores\n\nResponse Format:\n\u2022 Main Findings:\n  - Finding 1 supported by quote from ID X (relevance Y)\n  - Finding 2 supported by quote from ID X (relevance Y)\n\n\u2022 Data Limitations:\n  - What information is missing\n  - What time period is covered\n\nRemember: Only make claims that are directly supported by quotes from the context.\n\nAnswer:\n1. The typical financial impacts reported in personal loan complaints include payments and negative remarks on credit reports.\n\n2. The ID X is the complaint ID provided in the context.\n\n3. The text cited is the exact text from the context.\n\n4. The relevance score is 0.29, which is higher than the average relevance score of 0.25.\n\n5. Finding 1 supports the relevance score by citing ID X (relevance Y) and the negative remark on the credit report.\n\n6. Finding 2 supports the relevance score by citing ID X (relevance Y) and the payments and negative remarks on the credit report.\n\nOverall, the text provides evidence of financial impacts reported in personal loan complaints.",
+    "chunks": [
+      {
+        "id": "6474469",
+        "text": "has caused financial hardship on all of my businesses and myself personally due to not receiving the..."
+      },
+      {
+        "id": "13193604",
+        "text": "payments and negative remarks on my credit report that come from this situation..."
+      }
+    ],
+    "expected_themes": [
+      "monetary impact",
+      "customer hardship"
+    ],
+    "quality_score": null,
+    "comments": null
+  },
+  {
+    "question_id": "Q5",
+    "category": "Resolution Analysis",
+    "question": "How effective are banks at resolving money transfer complaints?",
+    "response": "You are a financial analyst assistant for CrediTrust. Your task is to answer questions about customer complaints using ONLY the provided context.\n\nContext:\n[Complaint 1]\nID: 5427576\nProduct: money transfer, virtual currency, or money service\nDate: 2022-04-09\nRelevance: 0.45\nContent: two money transfers were sent via money transfer to a bank account overseas the money never arrived to the intended recipients after numerous attempts to resolve the situation and get a refund they promised to resolve the situation within hours but failed to do so i submitted my complaint almost months ago\n\n\n[Complaint 2]\nID: 11724650\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-21\nRelevance: 0.13\nContent: i am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violate the cunsomer financial protection act cfpa specifically cash app failed to take timley and effective messaures to prevent and address fraud on their platform leaving my account vulnerable and unprotected futhermore their dispute resolution process was unfair and deceptive as they did not comply with error resolution requirements under the electronic funds transfer act efta and\n\n\n[Complaint 3]\nID: 11570280\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-17\nRelevance: 0.13\nContent: i am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violates cfpa specifically cash app failed to take timely and effective measures to prevent and address fraud on their platform leaving my account vulnerable and unprotected furthermore their dispute resolution process was unfair and deceptive as they did not comply with error resolution requirements under the electronic fund transfer act efta and regulation e these actions have\n\n\n[Complaint 4]\nID: 11603320\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-21\nRelevance: 0.13\nContent: i am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violates the customer financial protection art cfpa specifically cash app failed to take timely and effective measures to prevent and address fraud on their platform leaving my account vulnerable and unprotected furthermore their dispute resolution process was unfair and deceptive as they did not comply with error resolution requirements under the electronic fund transfer act efta and\n\n\n[Complaint 5]\nID: 11752041\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-24\nRelevance: 0.13\nContent: i am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violates the consumer financial protection agency cfpa specifically cash app failed to take timely and effective measures to prevent an address fraud on their platform leaving my account vulnerable and unprotected furthermore their dispute resolution process was unfair and deceptive as they did not comply with error resolution requirements under the electronic fund transfer act efta\n\n\nQuestion: How effective are banks at resolving money transfer complaints?\n\nInstructions:\n1. Base your answer ONLY on the provided context - do not make assumptions\n2. For each claim, quote the exact text and cite the complaint ID\n3. Keep your response under 300 words\n4. Use bullet points for better readability\n5. Focus on complaints with higher relevance scores\n\nResponse Format:\n\u2022 Main Findings:\n  - Finding 1 supported by quote from ID X (relevance Y)\n  - Finding 2 supported by quote from ID X (relevance Y)\n\n\u2022 Data Limitations:\n  - What information is missing\n  - What time period is covered\n\nRemember: Only make claims that are directly supported by quotes from the context.\n\nAnswer:\n1. Effective:\nBanks are effective in resolving money transfer complaints, with a higher relevance score than the average.\n\n2. ID: 11724650\nClaim: ID: 11724650\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-21\nRelevance: 0.13\nContent: I am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violates the cfpa specifically cash app failed to take timley and effective measures to prevent and address fraud on their platform leaving my account vulnerable and unprotected furthermore their dispute resolution process was unfair and deceptive as they did not comply with error resolution requirements under the electronic fund transfer act efta and\n\n3. ID: 11603320\nClaim: ID: 11603320\nProduct: money transfer, virtual currency, or money service\nDate: 2025-01-21\nRelevance: 0.13\nContent: I am filing a complaint against cash app block inc due to inadequate customer service and unfair practices which violates the customer financial protection art cfpa specifically cash",
+    "chunks": [
+      {
+        "id": "5427576",
+        "text": "two money transfers were sent via money transfer to a bank account overseas the money never arrived ..."
+      },
+      {
+        "id": "11724650",
+        "text": "i am filing a complaint against cash app block inc due to inadequate customer service and unfair pra..."
+      }
+    ],
+    "expected_themes": [
+      "resolution time",
+      "customer satisfaction"
+    ],
+    "quality_score": null,
+    "comments": null
+  }
+]
